@@ -29,8 +29,7 @@ public class EchoServer {
                     .localAddress(new InetSocketAddress(port))
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
-                        public void initChannel(SocketChannel ch)
-                                throws Exception {
+                        public void initChannel(SocketChannel ch) {
                             ch.pipeline().addLast(
                                     new EchoServerHandler());
                         }
@@ -44,13 +43,13 @@ public class EchoServer {
     }
 
     public static void main(String[] args) throws Exception {
-        if (args.length != 1) {
+        /*if (args.length != 1) {
             System.err.println(
                     "Usage: " + EchoServer.class.getSimpleName() + " <port>"
             );
             return;
-        }
-        int port = Integer.parseInt(args[0]);
-        new EchoServer(port).start();
+        }*/
+        //int port = Integer.parseInt(args[0]);
+        new EchoServer(8885).start();
     }
 }

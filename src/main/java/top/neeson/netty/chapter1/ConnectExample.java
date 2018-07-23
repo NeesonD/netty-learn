@@ -18,16 +18,13 @@ public class ConnectExample {
 
     public static void connect(Channel channel) {
         ChannelFuture channelFuture = channel.connect(new InetSocketAddress("localhost", 25));
-        channelFuture.addListener(new ChannelFutureListener() {
-            @Override
-            public void operationComplete(ChannelFuture channelFuture) throws Exception {
-                if (channelFuture.isSuccess()) {
-                    ByteBuf buf = Unpooled.copiedBuffer("Hello", Charset.defaultCharset());
-                    ChannelFuture wf = channelFuture.channel().writeAndFlush(buf);
-                } else {
-                    Throwable cause = channelFuture.cause();
-                    cause.printStackTrace();
-                }
+        channelFuture.addListener((ChannelFutureListener) channelFuture1 -> {
+            if (channelFuture1.isSuccess()) {
+                ByteBuf buf = Unpooled.copiedBuffer("Hello", Charset.defaultCharset());
+                ChannelFuture wf = channelFuture1.channel().writeAndFlush(buf);
+            } else {
+                Throwable cause = channelFuture1.cause();
+                cause.printStackTrace();
             }
         });
     }

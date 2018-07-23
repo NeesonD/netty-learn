@@ -17,8 +17,7 @@ public class NettyNioServer {
 
     public void server(int port) throws InterruptedException {
         final ByteBuf buf = Unpooled.unreleasableBuffer(
-                Unpooled.copiedBuffer("Hi!\r\n", CharsetUtil.UTF_8)
-        );
+                Unpooled.copiedBuffer("Hi!\r\n", CharsetUtil.UTF_8));
         EventLoopGroup group = new NioEventLoopGroup();
         try {
             ServerBootstrap b = new ServerBootstrap();
@@ -27,7 +26,7 @@ public class NettyNioServer {
                     .localAddress(new InetSocketAddress(port))
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
-                        protected void initChannel(SocketChannel channel) throws Exception {
+                        protected void initChannel(SocketChannel channel) {
                             channel.pipeline().addLast(new ChannelInboundHandlerAdapter() {
                                 @Override
                                 public void channelActive(ChannelHandlerContext ctx) throws Exception {

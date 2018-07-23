@@ -5,6 +5,10 @@ import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.Charset;
+import java.time.temporal.TemporalUnit;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by daile on 2017/6/22.
@@ -13,12 +17,13 @@ public class PlainOioServer {
 
     public void server(int port) throws IOException {
         final ServerSocket socket = new ServerSocket(port);
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(10, 100, 1000, TimeUnit.SECONDS, new LinkedBlockingDeque<>());
         try {
             for (; ; ) {
                 final Socket ClientSocket = socket.accept();
                 System.out.println("Accepted connection from " + ClientSocket);
 
-                new Thread((Runnable) () -> {
+                executor.execute(() -> {
                     OutputStream out;
                     try {
                         out = ClientSocket.getOutputStream();
@@ -33,7 +38,7 @@ public class PlainOioServer {
 
                         }
                     }
-                }).start();
+                });
             }
         } catch (IOException e) {
             e.printStackTrace();

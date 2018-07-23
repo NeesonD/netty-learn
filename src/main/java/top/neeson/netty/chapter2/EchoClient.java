@@ -27,13 +27,12 @@ public class EchoClient {
         EventLoopGroup group = new NioEventLoopGroup();
         try {
             Bootstrap b = new Bootstrap();
-            b.group(group)
+            Bootstrap handler = b.group(group)
                     .channel(NioSocketChannel.class)
                     .remoteAddress(new InetSocketAddress(host, port))
                     .handler(new ChannelInitializer<SocketChannel>() {
-
                         @Override
-                        public void initChannel(SocketChannel socketChannel) throws Exception {
+                        public void initChannel(SocketChannel socketChannel) {
                             socketChannel.pipeline().addLast(new EchoClientHandler());
                         }
                     });
@@ -45,13 +44,13 @@ public class EchoClient {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        /*if (args.length != 2) {
+        if (args.length != 2) {
             System.err.println(
                     "Usage: " + EchoClient.class.getSimpleName() + " <host> <port>"
             );
             return;
-        }*/
-        final String host = args[0];
+        }
+        final String host = "localhost";
         final int port = Integer.parseInt("8885");
         new EchoClient(host, port).start();
     }
